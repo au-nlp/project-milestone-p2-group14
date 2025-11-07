@@ -1,0 +1,6 @@
+pandas
+matplotlib
+nltk
+torch
+transformers==4.35.0
+scikit-learn

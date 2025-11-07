@@ -1,22 +1,28 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/hgNAtOO3)
 
-# Emotion-aware Podcast Analysis
+# Podcast Emotion and Content Analysis
 
 ## Abstract
 
-This project explores the emotional and topical characteristics of podcast episodes using Natural Language Processing (NLP). By combining pre-trained language models with structured metadata, we analyze episodes at two complementary levels. At the turn level, we detect emotions and apply safety tagging for individual speaker turns. At the episode level, we aggregate these features to classify episodes into broad genres, estimate likely audience interests, and identify potentially unsafe content.
+The goal of this project is to develop an NLP pipeline capable of analyzing podcast episodes at multiple levels — identifying speaker emotions, classifying overall episode topics, and detecting potentially unsafe or sensitive content. By combining pre-trained language models with structured metadata, we analyze episodes at two complementary levels. At the turn level, we aim to automatically detect emotions. At the episode level, we aggregate these features to categorize entire episodes into genres such as *Technology*, *Comedy*, or *Politics*, estimate likely audience interests, and identify potentially unsafe content.
 
-Our proof-of-concept demonstrates that the data can be loaded and processed at scale using sample subsets, and that transformer-based predictions can be produced for turn texts and summarized per episode. The final outcome is a documented, reproducible pipeline and a single notebook that performs initial analyses, descriptive statistics, and end-to-end processing on samples—laying the groundwork for scaling to the full dataset.
+The motivation behind this project is to explore how language models can assist in content moderation and audience targeting across large-scale audio-transcript data. By combining emotional, topical, and safety-based insights, we aim to tell a data-driven story about how podcasts communicate tone and meaning — and how these linguistic cues can help both platforms and creators understand their audiences better.
+
+Our proof-of-concept demonstrates that the data can be loaded and processed at scale using sample subsets, and that transformer-based predictions can be produced for turn texts and summarized per episode. The final outcome is a documented, reproducible pipeline and a single notebook that performs initial analyses, descriptive statistics, and end-to-end processing on samples laying the groundwork for potentially scaling to the full dataset.
 
 ## Contributions
 
-**Two-level pipeline:** Turn-level emotion and safety predictions aggregated to episode-level summaries.
+**Turn-level emotion detection:** Turn-level emotion and safety predictions aggregated to episode-level summaries.
 
-**Episode understanding:** Genre/category estimation and audience-alignment signals from aggregated features.
+**Episode-level topic classification:** Category classification mapping emotional and linguistic features to broader genres.
 
-**Brand safety focus:** Automatic flags for potentially unsafe or sensitive content.
+**Brand safety focus:** Automatic flags for potentially unsafe or sensitive content, using pretrained toxicity detection models.
+
+**Audience interest prediction:** Exploring how emotional tone and topical focus align with potential listener profiles.
 
 **Reproducibility:** A single, well-documented notebook with clear data handling and descriptive statistics on samples.
+
+The novelty lies in the hierarchical analysis — moving from micro-level (speaker turns) to macro-level (episodes) — and in the integration of emotional, topical, and safety dimensions within a single coherent pipeline. While existing works often address one of these tasks in isolation, our approach aims to connect them, demonstrating how different layers of linguistic information interact.
 
 ## Data Loading and Overview
 
@@ -36,8 +42,67 @@ Interpretable outputs that highlight how emotions, topics, and tone interact acr
 
 None at this stage. If added later, we will document source, size, format, license, and a clear integration plan.
 
+
+## Methods
+
+### 1. Data Preparation
+
+- Load and merge the speaker-turn and episode-level datasets using mp3url as the key.
+- Conduct preprocessing by filtering missing values, normalizing text, merging subsequent speaker texts and handling missing categories.
+- Perform descriptive statistics to understand dataset composition (number of episodes, turns per episode, category distributions, missing values).
+- Filter and format data to match model input requirements (e.g., tokenization, truncation, and cleaning).
+
+### 2. Turn-Level Emotion Detection (Demo)
+
+- Use a pretrained transformer-based emotion model such as j-hartmann/emotion-english-distilroberta-base to classify each speaker turn into discrete emotions (e.g., joy, sadness, anger, fear).
+- Store emotion probabilities and derive aggregated statistics per episode.
+- Evaluate potential imbalances and ensure model interpretability through visualizations.
+
+### 3. Episode-Level Topic Classification (Demo)
+
+- Aggregate features across all speaker turns within each episode (e.g., mean emotion scores, top words, length of conversation).
+- Use pretrained embeddings or a zero-shot model (e.g., facebook/bart-large-mnli) to classify each episode into a predefined set of genres derived from the dataset’s category1–category3 fields.
+- Experiment with both single-label (main category) and multi-label (top 3–5 categories) setups to evaluate which captures semantic variety more effectively.
+
+### 4. Brand Safety Classification (Summary)
+
+- Apply a toxicity detection model such as unitary/toxic-bert to each episode’s transcript to flag unsafe or sensitive content.
+- Aggregate these results to classify episodes as “safe” or “unsafe,” and analyze their distribution across genres.
+
+### 5. Audience Target Prediction (Summary)
+
+- Based on the emotional and topical embeddings, use a zero-shot classification approach to infer likely audience segments (e.g., “young professionals”, “tech enthusiasts”, “general entertainment”).
+- This exploratory step aims to demonstrate the potential of emotion-based audience profiling.
+
+### 6. Evaluation & Visualization (Future Work)
+
+- Evaluate the performance of classification models using standard metrics (accuracy, F1, precision, recall).
+- Visualize the distribution of predicted emotions, categories, and safety ratings across episodes.
+- Present results in an interpretable format (e.g., radar charts, bar plots, and per-episode summaries).
+
+
+## Proposed Timeline and Internal Milestones
+
+Week 1 -	**Emotion Detection PoC:**	Implement and test a pretrained emotion model on speaker turns. Evaluate outputs and aggregation.
+
+Week 2 -	**Episode Classification PoC:**	Aggregate episode features and test zero-shot classification for topic prediction.
+
+Week 3 -	**Brand Safety Analysis:**	Integrate ToxicBERT and compute safe/unsafe content ratios per category.
+
+Week 4 -    **Model Refinement & Visualization:**	Optimize pipelines, finalize evaluation metrics, visualize results, and start preparing report.
+
+Week 5 -	**Final Integration & Documentation:**	Produce polished main notebook, README, and finalize report.
+
+## Organization Within the Team
+
+We aim to all equally contribute to each section.
+
 ### Appendix Repo Organisation
 
     project-milestone-p2-group14/
+        main.ipynb
         README.md
-        project.ipynb
+        .gitignore
+        data/
+            episodeLevelDataSample.jsongl.gz
+            speakerTurnDataSample.jsongl.gz

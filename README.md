@@ -135,11 +135,11 @@ pip install -r requirements.txt
     ├── README.md
     ├── .gitignore
     └── data/
-        ├── episodeLevelDataSample.jsongl.gz
-        └── speakerTurnDataSample.jsongl.gz
+        ├── episodeLevelDataSample.jsonl.gz
+        └── speakerTurnDataSample.jsonl.gz
 
 **Note:**
-The dataset files (`episodeLevelDataSample.jsongl.gz` and `speakerTurnDataSample.jsongl.gz`) are not included in the repository due to their large size.
+The dataset files (`episodeLevelDataSample.jsonl.gz` and `speakerTurnDataSample.jsonl.gz`) are not included in the repository due to their large size.
 
 To run the notebook successfully:
 

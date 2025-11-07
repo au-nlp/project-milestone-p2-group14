@@ -81,25 +81,28 @@ None at this stage. If added later, we will document source, size, format, licen
 - Present results in an interpretable format (e.g., radar charts, bar plots, and per-episode summaries).
 
 
-## Proposed Timeline
+## Proposed Timeline and Internal Milestones
 
-Week 1	Data Exploration & Pipeline Setup	Load data, merge tables, preprocess, and produce descriptive statistics.
+Week 1 -	**Emotion Detection PoC:**	Implement and test a pretrained emotion model on speaker turns. Evaluate outputs and aggregation.
 
-Week 2	Emotion Detection PoC	Implement and test a pretrained emotion model on speaker turns. Evaluate outputs and aggregation.
+Week 2 -	**Episode Classification PoC:**	Aggregate episode features and test zero-shot classification for topic prediction.
 
-Week 3	Episode Classification PoC	Aggregate episode features and test zero-shot classification for topic prediction.
+Week 3 -	**Brand Safety Analysis:**	Integrate ToxicBERT and compute safe/unsafe content ratios per category.
 
-Week 4	Brand Safety Analysis	Integrate ToxicBERT and compute safe/unsafe content ratios per category.
+Week 4 -    **Model Refinement & Visualization:**	Optimize pipelines, finalize evaluation metrics, visualize results, and start preparing report.
 
-Week 5	Model Refinement & Visualization	Optimize pipelines, finalize evaluation metrics, and visualize results.
+Week 5 -	**Final Integration & Documentation:**	Produce polished main notebook, README, and finalize report.
 
-Week 6	Final Integration & Documentation	Produce polished main notebook, README, and prepare for presentation.
+## Organization Within the Team
+
+We aim to all equally contribute to each section.
 
 ### Appendix Repo Organisation
 
     project-milestone-p2-group14/
         main.ipynb
         README.md
+        .gitignore
         data/
             episodeLevelDataSample.jsongl.gz
             speakerTurnDataSample.jsongl.gz

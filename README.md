@@ -1,156 +1,204 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/hgNAtOO3)
 
-# 🎧 Podcast Emotion and Content Analysis
+# Podcast Emotion and Content Analysis: A Multi-Level NLP Pipeline
 
-## Abstract
-
-The goal of this project is to develop an NLP pipeline capable of analyzing podcast episodes at multiple levels — identifying speaker emotions, classifying overall episode topics, and detecting potentially unsafe or sensitive content. By combining pre-trained language models with structured metadata, we analyze episodes at two complementary levels. At the turn level, we aim to automatically detect emotions. At the episode level, we aggregate these features to categorize entire episodes into genres such as *Technology*, *Comedy*, or *Politics*, estimate likely audience interests, and identify potentially unsafe content.
-
-The motivation behind this project is to explore how language models can assist in content moderation and audience targeting across large-scale audio-transcript data. By combining emotional, topical, and safety-based insights, we aim to tell a data-driven story about how podcasts communicate tone and meaning — and how these linguistic cues can help both platforms and creators understand their audiences better.
-
-Our proof-of-concept demonstrates that the data can be loaded and processed at scale using sample subsets, and that transformer-based predictions can be produced for turn texts and summarized per episode. The final outcome is a documented, reproducible pipeline and a single notebook that performs initial analyses, descriptive statistics, and end-to-end processing on samples laying the groundwork for potentially scaling to the full dataset.
-
----
-
-## Contributions
-
-**Turn-level emotion detection:**  
-Turn-level emotion and safety predictions aggregated to episode-level summaries.
-
-**Episode-level topic classification:**  
-Category classification mapping emotional and linguistic features to broader genres.
-
-**Brand safety focus:**  
-Automatic flags for potentially unsafe or sensitive content, using pretrained toxicity detection models.
-
-**Audience interest prediction:**  
-Exploring how emotional tone and topical focus align with potential listener profiles.
-
-**Reproducibility:**  
-A single, well-documented notebook with clear data handling and descriptive statistics on samples.
-
-The novelty lies in the hierarchical analysis — moving from micro-level (speaker turns) to macro-level (episodes) — and in the integration of emotional, topical, and safety dimensions within a single coherent pipeline. While existing works often address one of these tasks in isolation, our approach aims to connect them, demonstrating how different layers of linguistic information interact.
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Team Contributions](#team-contributions)
+- [The Multi-Task Pipeline](#the-multi-task-pipeline)
+- [Architecture & Implementation](#architecture--implementation)
+- [Dataset & Data Preparation](#dataset--data-preparation)
+- [Results & Evaluation](#results--evaluation)
+- [Repository Structure](#repository-structure)
+- [Requirements](#requirements)
+- [Documentation](#documentation)
+- [Acknowledgments](#acknowledgments)
 
 ---
 
-## Data Loading and Overview
+## Project Overview
 
-We work with two sample datasets for this milestone:  
-`episodeLevelDataSample` and `speakerTurnDataSample`.  
+This project develops a **coherent, multi-level NLP pipeline** that analyzes podcast episodes by integrating three linguistic dimensions:
 
-The full datasets exceed **20 GB**, so the milestone demonstrations focus on these smaller samples.  
-We load `.jsonl.gz` files, inspect schema and columns, and compute descriptive statistics (sizes, basic distributions, missingness).  
+1. **Emotion Detection** (Turn-level) — Identify emotional expressions in speaker turns using transformer-based classification
+2. **Category Classification** (Episode-level) — Classify podcast episodes into topical categories using aggregated linguistic features
+3. **Brand Safety Analysis** (Episode-level) — Detect toxic or unsafe content to support moderation and content filtering
 
-The key identifier `mp3url` links episode-level metadata to speaker-turn records, enabling turn-to-episode aggregation.
+**Core Innovation:** Rather than solving these tasks independently, we develop a **multi-task learning model** with shared representations that learns how emotions, topics, and safety interact across episodes. This demonstrates that different layers of linguistic information are interdependent and can be leveraged to improve overall understanding of podcast content.
 
----
-
-## Dataset Use Notice
-
-The datasets used in this project come from the [**SPoRC (Speech Podcast Research Corpus)**](https://huggingface.co/datasets/blitt/SPoRC).  
-They are publicly available for **research and academic purposes only**.
-
-We use only the *sample subsets* (`episodeLevelDataSample` and `speakerTurnDataSample`) to demonstrate our pipeline, ensuring efficient runtime and manageable memory usage.
+**Dataset:** 907 podcast episodes (123,379 speaker turns) from the [SPoRC](https://huggingface.co/datasets/blitt/SPoRC) corpus after filtering for episodes with available speaker turn data.
 
 ---
 
-## Expected Outcomes
+## Team Contributions
 
-- A fully documented pipeline capable of processing podcast transcript data.  
-- Demonstrated turn-level emotion and safety predictions using transformer-based models.  
-- Episode-level summaries generated by aggregating turn features (emotion distributions, category estimates, safety assessment).  
-- Interpretable outputs that highlight how emotions, topics, and tone interact across an episode.
+| Team Member | Contributions |
+|-------------|--------------|
+| **Cristina Semikina** | Data preprocessing and dataset exploration, Episode-level category classification, Multi-task model architecture & joint training & evaluation, integration of all three tasks, writing up the report |
+| **Gustav Sivel Aakjær Nielsen** | Data preprocessing and dataset exploration, turn-level emotion detection, toxicity analysis, emotional-category-safety correlation analysis including graphs, writing up the report |
+| **Oguzhan Sarisakaloglu** | |
 
----
-
-## Methods
-
-### 1. Data Preparation
-- Load and merge the speaker-turn and episode-level datasets using `mp3url` as the key.  
-- Conduct preprocessing by filtering missing values, normalizing text, merging subsequent speaker texts, and handling missing categories.  
-- Perform descriptive statistics to understand dataset composition (number of episodes, turns per episode, category distributions, missing values).  
-- Filter and format data to match model input requirements (tokenization, truncation, cleaning).
-
-### 2. Turn-Level Emotion Detection (Demo)
-- Use a pretrained transformer-based emotion model such as `j-hartmann/emotion-english-distilroberta-base` to classify each speaker turn into discrete emotions (e.g., joy, sadness, anger, fear).  
-- Store emotion probabilities and derive aggregated statistics per episode.  
-- Evaluate potential imbalances and ensure model interpretability through visualizations.
-
-### 3. Episode-Level Topic Classification (Demo)
-- Aggregate features across all speaker turns within each episode (mean emotion scores, top words, length of conversation).  
-- Use pretrained embeddings or a zero-shot model (e.g., `facebook/bart-large-mnli`) to classify each episode into genres derived from the dataset’s `category1–category3` fields.  
-- Experiment with both single-label (main category) and multi-label (top 3–5 categories) setups.
-
-### 4. Brand Safety Classification (Summary)
-- Apply a toxicity detection model such as `unitary/toxic-bert` to each episode’s transcript to flag unsafe or sensitive content.  
-- Aggregate these results to classify episodes as “safe” or “unsafe,” and analyze their distribution across genres.
-
-### 5. Audience Target Prediction (Summary)
-- Based on emotional and topical embeddings, use zero-shot classification to infer likely audience segments (e.g., “young professionals,” “tech enthusiasts”).  
-- Demonstrate potential of emotion-based audience profiling.
-
-### 6. Evaluation & Visualization (Future Work)
-- Evaluate classification performance using metrics such as accuracy, F1, precision, recall.  
-- Visualize predicted emotions, categories, and safety ratings across episodes (bar plots, radar charts, per-episode summaries).
+**Collaborative Work:**
+- Joint design of the multi-task pipeline architecture
+- Shared evaluation metrics and performance analysis
+- Integrated validation of task interactions
 
 ---
 
-## Proposed Timeline and Internal Milestones
+## The Multi-Task Pipeline
 
-| Week | Goal | Description |
-|------|------|--------------|
-| 1 | **Emotion Detection PoC** | Implement and test pretrained emotion model on speaker turns |
-| 2 | **Episode Classification PoC** | Aggregate episode features and test zero-shot classification |
-| 3 | **Brand Safety Analysis** | Integrate ToxicBERT and compute safe/unsafe ratios |
-| 4 | **Model Refinement & Visualization** | Optimize pipelines, finalize metrics, visualize results |
-| 5 | **Final Integration & Documentation** | Finalize report, notebook, and documentation |
+The pipeline operates by processing each episode through a shared transformer encoder that simultaneously learns three tasks:
+
+- **Turn-level emotion prediction:** Classifies emotional expressions in speaker turns using KL divergence loss against soft labels
+- **Episode-level category prediction:** Classifies the primary topic using cross-entropy loss
+- **Episode-level toxicity prediction:** Predicts safety score using MSE regression loss
+
+The three losses are combined with learnable weights: $\mathcal{L}_{total} = \lambda_{cat} \mathcal{L}_{cat} + \lambda_{tox} \mathcal{L}_{tox} + \lambda_{emo} \mathcal{L}_{emo}$
+
+### How Task Interaction is Evaluated
+
+**1. Shared Representation Learning**
+- The encoder learns a common feature space where turn-level and episode-level patterns co-occur
+- Emotions predict both local sentiment and contribute to episode-level safety/category decisions
+- Category information constrains emotion predictions (some topics naturally co-occur with specific emotions)
+
+**2. Joint Loss Balancing**
+- Weight adjustment reveals which tasks synergize vs. conflict
+- Example: If toxicity loss dominates, emotions and toxicity are strongly correlated; if balanced, they provide independent signal
+
+**3. Performance Comparison: Multi-Task vs. Single-Task**
+- Single-task models trained separately on each task
+- Multi-task model trained jointly with shared encoder
+- Metrics compared: Accuracy, F1, MAE, and per-task performance
+- Interpretation: If multi-task outperforms, tasks share beneficial representations
+
+**4. Correlation Analysis**
+- Turn-level emotion-toxicity correlations (e.g., disgust/anger → higher toxicity)
+- Episode-level category-emotion distributions (e.g., News → higher anger, Comedy → higher joy)
+- Category-safety relationships (e.g., News/Comedy → higher toxicity than Education/Tech)
+- These correlations validate that the model learns meaningful task interactions
+
+### Example Findings
+
+- **Emotion-Toxicity Synergy:** Disgust (0.369 mean toxicity) and Anger (0.359) highly predict unsafe content, while Joy (0.049) predicts safety. Joint learning leverages this predictive power.
+- **Category-Emotion Coupling:** News/Comedy episodes skew toward anger/surprise; Educational/Tech toward neutral. The shared encoder captures this coupling.
+- **Safety-Category Alignment:** News (13.5% toxicity ratio) and Comedy (12.5%) are higher-risk than Technology (~1%) and Education. Multi-task model balances category classification with safety assessment.
 
 ---
 
-## Organization Within the Team
+## Architecture & Implementation
 
-We aim to equally contribute to each section collaboratively.
+### Models Used
+
+| Task | Architecture | Input | Output | Loss Function |
+|------|--------------|-------|--------|---------------|
+| **Emotion** (turn-level) | DistilRoBERTa (pretrained) | Turn text | 7-class probabilities | KL Divergence (soft labels) |
+| **Toxicity** (episode-level) | toxic-bert (pretrained) | Turn text (cached) | Aggregated score [0,1] | MSE (regression) |
+| **Category** (episode-level) | DistilBERT + linear head | Episode text | 20-class logits | Cross-Entropy |
+| **Multi-Task** | Shared DistilBERT + 3 heads | Episode text (turn-windowed) | All three outputs | Weighted sum of above |
+
+### Relevant Details about Implementation 
+
+- **Turn-Level Caching:** Emotion and toxicity computed once per turn using pretrained models, cached to disk to avoid recomputation
+- **Episode Aggregation:** Turn-level predictions aggregated using mean pooling (emotions) and max pooling (toxicity)
+- **Soft Label Generation:** Emotion soft labels preserve uncertainty; toxicity uses max score as episode-level label
+- **Dynamic Windowing:** Long episodes (>32 turns) windowed randomly to balance detail with computational constraints
+- **Gradient Accumulation:** 4-step accumulation to achieve effective batch size of 16 on memory-constrained hardware
+- **Learnable Task Weights:** Loss weights (λ<sub>cat</sub>, λ<sub>tox</sub>, λ<sub>emo</sub>) are learned during training rather than fixed, allowing the model to discover optimal task importance dynamically
+
+
+---
+
+## Dataset & Data Preparation
+
+### Data Source
+[SPoRC (Speech Podcast Research Corpus)](https://huggingface.co/datasets/blitt/SPoRC) - 1.1M podcast episodes with transcripts, metadata, and speaker information.
+
+### Preprocessing Pipeline
+1. **Text Cleaning:** Lowercase, remove music/blank markers, normalize whitespace, remove punctuation
+2. **Stopword Removal:** NLTK English stopwords filtered
+3. **Turn Merging:** Consecutive speaker turns concatenated for coherent context
+4. **Long Turn Splitting:** Turns >500 chars split into 500-char chunks to preserve emotion progression
+5. **Final Filtering:** Turns with <2 words removed; episodes with <50 turns excluded
+
+### Final Dataset
+- **Episodes:** 907 (after cleanup; episodes with speaker turns in dataset)
+- **Turns:** 123,379 turn texts
+- **Categories:** 20 unique (from category1); 70 total across 10-level hierarchy
+- **Avg Turns/Episode:** 135.5
+
+---
+
+## Results & Evaluation
+
+### Single-Task Baselines
+- **Emotion Detection:** 7-class classification on turn level using pretrained DistilRoBERTa
+- **Toxicity Detection:** Binary/regression using toxic-bert
+- **Category Classification:** 20-class classification on episode level using DistilRoBERTa + linear head
+
+
+### Multi-Task Performance
+Performance metrics and detailed results includes:
+- Category classification accuracy and F1-score
+- Toxicity prediction MAE (mean absolute error)
+- Emotion prediction F1 (macro-averaged)
+- Weighted overall score combining all three tasks
+
+---
+
+## Repository Structure
+
+```
+project-milestone-p2-group14/
+│
+├── main.ipynb                          # Main notebook: end-to-end pipeline
+├── README.md                           # This file
+├── requirements.txt                    # Python dependencies
+├── .gitignore
+│
+└── data/                               # Data folder (not included in repo)
+    ├── episodeLevelDataSample.jsonl.gz
+    ├── speakerTurnDataSample.jsonl.gz
+    ├── emotion_cache/                  # Cached emotion predictions
+    │   └── emotion_predictions.csv
+    └── toxicity_cache/                 # Cached toxicity predictions
+        └── toxicity_scores.csv
+```
 
 ---
 
 ## Requirements
+- Python 3.10+
+- Jupyter Notebook
+- Dependencies: See `requirements.txt`
 
-To reproduce our results, ensure you have the following installed:
-
-- Python **3.10+**
-- Jupyter Notebook  
-- Dependencies in `requirements.txt`
+### Installation
 
 Install everything via:
 
 ```bash
 pip install -r requirements.txt
 ```
+Download data from SPoRC (episodeLevelDataSample.jsonl.gz and speakerTurnDataSample.jsonl.gz) https://huggingface.co/datasets/blitt/SPoRC/tree/main
 
-## Appendix: Repo Organisation
+Create data/ folder and place episodeLevelDataSample.jsonl.gz and speakerTurnDataSample.jsonl.gz
 
-    project-milestone-p2-group14/
-    │
-    ├── main.ipynb
-    ├── README.md
-    ├── .gitignore
-    └── data/
-        ├── episodeLevelDataSample.jsonl.gz
-        └── speakerTurnDataSample.jsonl.gz
+The emotion_cache and toxicity_cache folders and underlying files will automatically be created the first time you run the  entire code.
 
-**Note:**
-The dataset files (`episodeLevelDataSample.jsonl.gz` and `speakerTurnDataSample.jsonl.gz`) are not included in the repository due to their large size.
+---
 
-To run the notebook successfully:
-
-* Download the data files from the [SPoRC dataset page](https://huggingface.co/datasets/blitt/SPoRC)
-* Create a `data/` directory at the project root.
-* Place the downloaded files inside the `data/` folder following the structure above.
-
-This ensures that all data loading paths in `main.ipynb` work as intended.
+## Documentation
+- README now clearly describes the entire pipeline and how task interactions are evaluated
+- LaTeX report includes detailed methods, results, and analysis sections
+- Code comments explain architectural decisions and design patterns
 
 ---
 
 ## Acknowledgments
+
 This project was developed as part of the Natural Language Processing course at Aarhus University.
-We thank the course staff for their guidance and the creators of the SPoRC dataset for providing open access podcast transcription data.
+
+We thank:
+- The course staff for their guidance and constructive feedback
+- The creators of the [SPoRC dataset](https://huggingface.co/datasets/blitt/SPoRC) for providing open-access podcast transcription data
+- The Hugging Face community for pretrained models and utilities

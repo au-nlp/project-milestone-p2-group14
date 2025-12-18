@@ -7,12 +7,12 @@
 - [Team Contributions](#team-contributions)
 - [The Multi-Task Pipeline](#the-multi-task-pipeline)
 - [Architecture & Implementation](#architecture--implementation)
-- [Key Innovations](#key-innovations)
 - [Dataset & Data Preparation](#dataset--data-preparation)
 - [Results & Evaluation](#results--evaluation)
 - [Repository Structure](#repository-structure)
-- [Getting Started](#getting-started)
-- [Updates Since P2](#updates-since-p2)
+- [Requirements](#requirements)
+- [Documentation](#documentation)
+- [Acknowledgments](#acknowledgments)
 
 ---
 
@@ -75,7 +75,7 @@ The three losses are combined with learnable weights: $\mathcal{L}_{total} = \la
 **4. Correlation Analysis**
 - Turn-level emotion-toxicity correlations (e.g., disgust/anger → higher toxicity)
 - Episode-level category-emotion distributions (e.g., News → higher anger, Comedy → higher joy)
-- Category-safety relationships (e.g., News/Comedy \rightarrow higher toxicity than Education/Tech)
+- Category-safety relationships (e.g., News/Comedy → higher toxicity than Education/Tech)
 - These correlations validate that the model learns meaningful task interactions
 
 ### Example Findings
@@ -104,7 +104,7 @@ The three losses are combined with learnable weights: $\mathcal{L}_{total} = \la
 - **Soft Label Generation:** Emotion soft labels preserve uncertainty; toxicity uses max score as episode-level label
 - **Dynamic Windowing:** Long episodes (>32 turns) windowed randomly to balance detail with computational constraints
 - **Gradient Accumulation:** 4-step accumulation to achieve effective batch size of 16 on memory-constrained hardware
-- **Learnable Task Weights:** Loss weights ($\lambda_\text{cat}, λ_tox, λ_emo) are learned during training rather than fixed, allowing the model to discover optimal task importance dynamically
+- **Learnable Task Weights:** Loss weights (λ<sub>cat</sub>, λ<sub>tox</sub>, λ<sub>emo</sub>) are learned during training rather than fixed, allowing the model to discover optimal task importance dynamically
 
 
 ---
@@ -182,6 +182,8 @@ pip install -r requirements.txt
 Download data from SPoRC (episodeLevelDataSample.jsonl.gz and speakerTurnDataSample.jsonl.gz) https://huggingface.co/datasets/blitt/SPoRC/tree/main
 
 Create data/ folder and place episodeLevelDataSample.jsonl.gz and speakerTurnDataSample.jsonl.gz
+
+The emotion_cache and toxicity_cache folders and underlying files will automatically be created the first time you run the  entire code.
 
 ---
 

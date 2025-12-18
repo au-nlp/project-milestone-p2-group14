@@ -161,8 +161,17 @@ project-milestone-p2-group14/
     ├── speakerTurnDataSample.jsonl.gz
     ├── emotion_cache/                  # Cached emotion predictions
     │   └── emotion_predictions.csv
-    └── toxicity_cache/                 # Cached toxicity predictions
-        └── toxicity_scores.csv
+    ├── toxicity_cache/                 # Cached toxicity predictions
+    │   └── toxicity_scores.csv
+    └── models/                         # Trained models
+        ├── episode_classifier_model.pt
+        └── episode_classifier_tokenizer/
+            ├── tokenizer_config.json
+            ├── special_tokens_map.json
+            ├── vocab.json
+            ├── merges.txt
+            ├── added_tokens.json
+            └── tokenizer.json
 ```
 
 ---

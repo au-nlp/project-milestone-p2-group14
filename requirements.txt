@@ -1,6 +1,11 @@
 pandas
+numpy
 matplotlib
 nltk
 torch
 transformers==4.35.0
 scikit-learn
+scipy
+tqdm
+jupyter
+ipykernel

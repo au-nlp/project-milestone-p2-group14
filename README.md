@@ -179,9 +179,11 @@ Install everything via:
 ```bash
 pip install -r requirements.txt
 ```
-Download data from SPoRC (episodeLevelDataSample.jsonl.gz and speakerTurnDataSample.jsonl.gz) https://huggingface.co/datasets/blitt/SPoRC/tree/main
+Download data from SPoRC (episodeLevelDataSample.jsonl.gz and speakerTurnDataSample.jsonl.gz): https://huggingface.co/datasets/blitt/SPoRC/tree/main
 
-Create data/ folder and place episodeLevelDataSample.jsonl.gz and speakerTurnDataSample.jsonl.gz
+Or directly from the 'group14' folder in the shared 'NLP 2025 Storage' drive: https://drive.google.com/drive/folders/1V8wOGCScSwad4vQui-ob_hBCX3YrX1pE
+
+Create data/ folder and place episodeLevelDataSample.jsonl.gz and speakerTurnDataSample.jsonl.gz inside it.
 
 The emotion_cache and toxicity_cache folders and underlying files will automatically be created the first time you run the  entire code.
 

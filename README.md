@@ -36,12 +36,6 @@ This project develops a **coherent, multi-level NLP pipeline** that analyzes pod
 |-------------|--------------|
 | **Cristina Semikina** | Data preprocessing and dataset exploration, Episode-level category classification, Multi-task model architecture & joint training & evaluation, integration of all three tasks, writing up the report |
 | **Gustav Sivel Aakjær Nielsen** | Data preprocessing and dataset exploration, turn-level emotion detection, toxicity analysis, emotional-category-safety correlation analysis including graphs, writing up the report |
-| **Oguzhan Sarisakaloglu** | |
-
-**Collaborative Work:**
-- Joint design of the multi-task pipeline architecture
-- Shared evaluation metrics and performance analysis
-- Integrated validation of task interactions
 
 ---
 
